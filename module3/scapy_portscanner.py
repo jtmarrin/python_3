@@ -15,7 +15,17 @@ endport = int(sys.argv[3])
 
 print('Scanning '+target+' for open TCP ports\n')
 
+if startport == endport:
+    endport += 1
 
-
-hell
+try:
+    for x in range(startport, endport):
+        packet = IP(dst=target)/TCP(dport=x,flags='S')
+        response = sr1(packet,timeout=0.5,verbose=0)
+        if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12: #SYN/ACK flag
+            print('Port '+ str(x) + ' is open!')
+            sr(IP(dst=target)/TCP(dport=response.sport,flags='R'),timeout=0.5,verbose=0)  # reset packet
+except:
+    print('You may be scanning a closed host!')
+print('Scan is complete!\n')
 
