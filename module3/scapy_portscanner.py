@@ -26,6 +26,6 @@ try:
             print('Port '+ str(x) + ' is open!')
             sr(IP(dst=target)/TCP(dport=response.sport,flags='R'),timeout=0.5,verbose=0)  # reset packet
 except:
-    print('You may be scanning a closed host!')
+    print('You may be scanning a closed host!\n')
 print('Scan is complete!\n')
 
