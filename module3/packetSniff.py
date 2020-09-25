@@ -52,8 +52,8 @@ def main():
                     if src_port == 80 or dest_port == 80:
                         print(TAB_2 + 'HTTP Data:')
                         try:
-                            http = HTTP(data)
-                            http_info = str(http.data).split('\n')
+                            #http = HTTP(data)
+                            http_info = str(data).split('\n')
                             for line in http_info:
                                 print(DATA_TAB_3 + str(line))
                         except:
@@ -107,14 +107,14 @@ def icmp_packet(data):
 
 # Unpacks for any TCP Packet
 def tcp_seg(data):
-    (src_port, destination_port, sequence, acknowledgenment, offset_reserv_flag) = struct.unpack('! H H L L H', data[:14])
+    (src_port, dest_port, sequence, acknowledgement, offset_reserv_flag) = struct.unpack('! H H L L H', data[:14])
     offset = (offset_reserv_flag >> 12) * 4
-    flag_urg = (offset_reserved_flag & 32) >> 5
-    flag_ack = (offset_reserved_flag & 32) >>4
-    flag_psh = (offset_reserved_flag & 32) >> 3
-    flag_rst = (offset_reserved_flag & 32) >> 2
-    flag_syn = (offset_reserved_flag & 32) >> 1
-    flag_fin = (offset_reserved_flag & 32) >> 1
+    flag_urg = (offset & 32) >> 5
+    flag_ack = (offset & 32) >>4
+    flag_psh = (offset & 32) >> 3
+    flag_rst = (offset & 32) >> 2
+    flag_syn = (offset & 32) >> 1
+    flag_fin = (offset & 32) >> 1
 
     return src_port, dest_port, sequence, acknowledgement, flag_urg, flag_ack, flag_psh, flag_rst, flag_syn, flag_fin, data[offset:]
 
